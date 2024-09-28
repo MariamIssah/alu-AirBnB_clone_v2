@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
 import unittest
-
-import models
-from models.base_model import BaseModel
 import os
+from models.base_model import BaseModel
+from models.user import User
+import models
 
 
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "skip if not db")
@@ -24,9 +24,8 @@ class TestFileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        except:
+        except Exception:
             pass
-
         del self.storage
 
     def test_obj_list_empty(self):
@@ -110,5 +109,24 @@ class TestFileStorage(unittest.TestCase):
     def test_storage_var_created(self):
         """ FileStorage object storage created """
         from models.engine.file_storage import FileStorage
-        print(type(self.storage))
         self.assertEqual(type(self.storage), FileStorage)
+
+    def test_delete(self):
+        """ Test that objects are correctly deleted from storage """
+        new = BaseModel()
+        self.storage.new(new)
+        self.storage.delete(new)
+        self.assertNotIn(f"BaseModel.{new.id}", self.storage.all())
+
+    def test_multiple_objects(self):
+        """ Test saving and reloading multiple objects """
+        user1 = User()
+        user2 = User()
+        user1.save()
+        user2.save()
+        self.storage.reload()
+        self.assertEqual(len(self.storage.all()), 2)
+
+
+if __name__ == "__main__":
+    unittest.main()
