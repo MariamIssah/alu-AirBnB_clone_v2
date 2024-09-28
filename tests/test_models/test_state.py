@@ -3,8 +3,9 @@
 from tests.test_models.test_base_model import TestBaseModel
 from models.state import State
 
+class TestState(TestBaseModel):
+    # Add your state-related tests here
 
-class test_state(test_basemodel):
     """ """
 
     def __init__(self, *args, **kwargs):
