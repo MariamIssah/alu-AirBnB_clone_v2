@@ -7,7 +7,7 @@ from os.path import join, exists, splitext
 
 
 env.user = "ubuntu"
-env.hosts = ["50.19.47.158", "18.215.166.42"]
+env.hosts = ["3.89.71.4", "98.81.218.79"]
 env.key_filename = '~/.ssh/id_rsa'
 
 
